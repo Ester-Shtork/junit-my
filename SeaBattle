@@ -1,0 +1,200 @@
+/* Два массива 10х10. Адресация x, y.
+ *X - вертикаль, Y - горизонталь.
+ *
+ *5 кораблей, размер 1 клетка
+ *
+ *Кодировка полей в массиве:
+ *'.' пустая клетка
+ *'х' пустая клетка, по которой стрелял противник
+ *'о' корабль
+ *'w' подбитый корабль
+ */
+
+package seabattle;
+
+import java.util.Scanner;
+
+public class SeaBattle {
+
+    public static void main(String[] args) {
+    
+    //Расстановка кораблей
+    int x, y, tmp, orient;
+    String tmp1;
+    char[][] comp = new char[10][10];
+    char[][] comp1 = new char [10][10];
+    char[][] user = new char[10][10];
+    
+    for (x=0; x<10; x++)
+        for (y=0; y<10; y++) {
+            comp[x][y] = '.';
+            comp1[x][y] = '.';
+            user[x][y] = '.';
+        }
+
+    /*Правила расстановки кораблей
+    Сначала ставится линкор на 4 клетки. Ориентация 0 - горизонталь, 1 - вертикаль
+    Затем 2 крейсера на 3 клетки. Ориентация та же
+    Затем 3 эсминца на 2 клетки. Ориентация та же
+    Последними ставятся 4 катера по 1 клетке
+    
+    Со всеми кораблями задается изначальная точка координат: верхняя левая клетка, от нее ставится корабль
+    */
+    
+    //Расстановка кораблей пользователя
+    System.out.println("Давайте расставим корабли.\nНачнем с линкора, затем пойдут крейсеры, эсминцы и катера соответственно.\nВнимание!\nРасставляя большие корабли, задавайте верхнюю или левую клетку.\nКорабль встанет автоматически.\nУ больших кораблей есть ориентация - горизонталь и вертикаль.\nГоризонталь - 0.\nВертикаль - 1.\nКоординаты вводятся двузначным числом, где первая цифра - вертикаль, вторая - горизонталь.");
+    Scanner sc=new Scanner(System.in);
+    
+    do {
+        System.out.println("Введите ориентацию линкора:");
+        tmp1=sc.nextLine();
+        try{
+            orient=Integer.parseInt(tmp1);
+        }catch (NumberFormatException e){
+            System.out.println("Введите, пожалуйста, 0 или 1");
+            orient=-1;
+        }
+    }while (orient<0 || orient>1);
+    
+    do {
+        System.out.println("Введите координаты линкора:");
+        tmp1=sc.nextLine();
+            try{
+                tmp=Integer.parseInt(tmp1);
+            }catch (NumberFormatException e){
+            System.out.println("Введите, пожалуйста, двузначное число");
+            tmp=-1;
+            }
+    } while (tmp<0 || tmp>99);
+    
+    x=tmp/10;
+    y=tmp-x*10;
+    
+    if (orient==0)
+        for (int i=0; i<4; i++)
+            user[x][y+i]='o';
+    else
+        for (int i=0; i<4; i++)
+            user[x+i][y]='o';
+    
+    for (int i=0; i<2; i++){
+
+        do {
+            System.out.println("Введите ориентацию "+(i+1)+" крейсера:");
+            tmp1=sc.nextLine();
+            try{
+            orient=Integer.parseInt(tmp1);
+            }catch (NumberFormatException e){
+            System.out.println("Введите, пожалуйста, 0 или 1");
+            orient=-1;
+            }
+        }while (orient<0 || orient>1);
+        
+        do { 
+            System.out.println("Введите координаты "+(i+1)+" крейсера:");
+            tmp1=sc.nextLine();
+            try{
+                tmp=Integer.parseInt(tmp1);
+            }catch (NumberFormatException e){
+            System.out.println("Введите, пожалуйста, двузначное число");
+            tmp=-1;
+            }
+        } while (tmp<0 || tmp>99);
+            
+        x=tmp/10;
+        y=tmp-x*10;
+        
+        if (orient==0)
+            for (int j=0; j<3; j++)
+                user[x][y+j]='o';
+        else
+            for (int j=0; j<3; j++)
+                user[x+j][y]='o';
+    }
+    
+    for (int i=0; i<3; i++){
+
+        do {
+            System.out.println("Введите ориентацию "+(i+1)+" эсминца:");
+            tmp1=sc.nextLine();
+            try{
+            orient=Integer.parseInt(tmp1);
+            }catch (NumberFormatException e){
+            System.out.println("Введите, пожалуйста, 0 или 1");
+            orient=-1;
+            }
+        }while (orient<0 || orient>1);
+        
+        do { 
+            System.out.println("Введите координаты "+(i+1)+" эсминца:");
+            tmp1=sc.nextLine();
+            try{
+                tmp=Integer.parseInt(tmp1);
+            }catch (NumberFormatException e){
+            System.out.println("Введите, пожалуйста, двузначное число");
+            tmp=-1;
+            }
+        } while (tmp<0 || tmp>99);
+            
+        x=tmp/10;
+        y=tmp-x*10;
+        
+        if (orient==0)
+            for (int j=0; j<2; j++)
+                user[x][y+j]='o';
+        else
+            for (int j=0; j<2; j++)
+                user[x+j][y]='o';
+    }
+    
+    for (int i=0; i<4; i++){
+        
+        do { 
+            System.out.println("Введите координаты "+(i+1)+" катера:");
+            tmp1=sc.nextLine();
+            try{
+                tmp=Integer.parseInt(tmp1);
+            }catch (NumberFormatException e){
+            System.out.println("Введите, пожалуйста, двузначное число");
+            tmp=-1;
+            }
+        } while (tmp<0 || tmp>99);
+            
+        x=tmp/10;
+        y=tmp-x*10;
+        user[x][y]='o';
+    }
+    
+    //Расстановка кораблей компьютера
+    for(int i=0;i<5;i++){
+        x=(int)(Math.random()*10);
+        y=(int)(Math.random()*10);
+        comp[x][y]='o';
+    }
+    
+    //Вывод игровых полей на экран
+    
+        System.out.println(" Пользователь   Компьютер");
+        System.out.println(" 0123456789     0123456789");
+        
+        for (x=0; x<10; x++){
+            
+            System.out.print(x);
+
+            for (y=0; y<10; y++)
+                System.out.print(user[x][y]);
+            
+            System.out.print("    ");
+            System.out.print(x);
+            
+            for (y=0; y<10; y++)
+                System.out.print(comp1[x][y]);
+            
+            System.out.print("\n");
+        }
+        
+    //Игра
+    
+    }
+    
+}
